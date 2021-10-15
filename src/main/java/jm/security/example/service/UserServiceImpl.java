@@ -1,12 +1,10 @@
 package jm.security.example.service;
 
 import jm.security.example.dao.UserDao;
-import jm.security.example.model.Role;
 import jm.security.example.model.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
-
 import javax.transaction.Transactional;
 import java.util.List;
 
@@ -51,7 +49,9 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public void update(User user) {
-        user.setPassword(passwordEncoder.encode(user.getPassword()));
+        if (!(user.getPassword().equals(userDao.show(user.getId()).getPassword()))) {
+            user.setPassword(passwordEncoder.encode(user.getPassword()));
+        }
         userDao.update(user);
     }
 
@@ -59,22 +59,4 @@ public class UserServiceImpl implements UserService {
     public void delete(long id) {
         userDao.delete(id);
     }
-
-    @Override
-    public Role getRoleById(long id) {
-        return userDao.getRoleById(id);
-    }
-
-    @Override
-    public List<Role> getAllRoles(){
-        return userDao.getAllRoles();
-    }
-
-    @Override
-    public void saveRole(Role role) {
-        userDao.saveRole(role);
-    }
-
-
-
 }

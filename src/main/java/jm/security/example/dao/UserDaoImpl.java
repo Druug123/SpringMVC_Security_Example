@@ -2,13 +2,10 @@ package jm.security.example.dao;
 
 import jm.security.example.model.Role;
 import jm.security.example.model.User;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Repository;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import java.util.List;
-
 
 @Repository
 public class UserDaoImpl implements UserDao {
@@ -20,12 +17,10 @@ public class UserDaoImpl implements UserDao {
         this.entityManager = entityManager;
     }
 
-
     @Override
     public List<User> index() {
         return entityManager.createQuery("SELECT user from User user").getResultList();
     }
-
 
     @Override
     public void create(User user) {
@@ -57,21 +52,6 @@ public class UserDaoImpl implements UserDao {
         return (User) entityManager.createQuery("SELECT user from User user where user.name=:name")
                 .setParameter("name", name)
                 .getSingleResult();
-    }
-
-    @Override
-    public Role getRoleById(long id) {
-        return entityManager.find(Role.class, id);
-    }
-
-    @Override
-    public List<Role> getAllRoles() {
-        return entityManager.createQuery("SELECT role from Role role").getResultList();
-    }
-
-    @Override
-    public void saveRole(Role role){
-        entityManager.merge(role);
     }
 }
 

@@ -1,10 +1,8 @@
 package jm.security.example.model;
 
-import lombok.Data;
 import lombok.Getter;
 import lombok.Setter;
 import org.springframework.security.core.GrantedAuthority;
-
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
@@ -41,5 +39,4 @@ public class Role implements GrantedAuthority {
     public String toString() {
         return role;
     }
-
 }

@@ -2,12 +2,12 @@ package jm.security.example.controller;
 
 import jm.security.example.model.Role;
 import jm.security.example.model.User;
+import jm.security.example.service.RoleService;
 import jm.security.example.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
-
 import java.util.*;
 
 @Controller
@@ -16,9 +16,12 @@ public class AdminController {
 
     private final UserService userService;
 
+    private final RoleService roleService;
+
     @Autowired
-    public AdminController(UserService userService) {
+    public AdminController(UserService userService, RoleService roleService) {
         this.userService = userService;
+        this.roleService = roleService;
     }
 
     @GetMapping
@@ -30,7 +33,7 @@ public class AdminController {
 
     @GetMapping("/new")
     public String newUser(@ModelAttribute("user") User user, Model model) {
-        model.addAttribute("roles", userService.getAllRoles());
+        model.addAttribute("roles", roleService.getAllRoles());
         return "admin/new";
     }
 
@@ -38,7 +41,7 @@ public class AdminController {
     public String createUser(@ModelAttribute("user") User user, @RequestParam(value = "roleList") long[] roleList) {
         Set<Role> roles = new HashSet<>();
         for (long roleId : roleList){
-            roles.add(userService.getRoleById(roleId));
+            roles.add(roleService.getRoleById(roleId));
         }
         user.setRoles(roles);
         userService.create(user);
@@ -48,7 +51,7 @@ public class AdminController {
     @GetMapping("/{id}/edit")
     public String edit(Model model, @PathVariable("id") long id) {
         model.addAttribute("user", userService.show(id));
-        model.addAttribute("roles", userService.getAllRoles());
+        model.addAttribute("roles", roleService.getAllRoles());
         return "admin/edit";
     }
 
@@ -56,7 +59,7 @@ public class AdminController {
     public String update(@ModelAttribute("user") User user, @RequestParam(value = "roleList") long[] roleList) {
         Set<Role> roles = new HashSet<>();
         for (long roleId : roleList){
-            roles.add(userService.getRoleById(roleId));
+            roles.add(roleService.getRoleById(roleId));
         }
         user.setRoles(roles);
         userService.update(user);

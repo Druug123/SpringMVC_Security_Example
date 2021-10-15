@@ -4,7 +4,6 @@ import lombok.Getter;
 import lombok.Setter;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
-
 import javax.persistence.*;
 import java.util.Collection;
 import java.util.Set;
@@ -18,15 +17,11 @@ public class User implements UserDetails {
     @GeneratedValue
     private Long id;
 
-
     private String name;
-
 
     private String password;
 
-
     private int age;
-
 
     private String email;
 
@@ -81,6 +76,4 @@ public class User implements UserDetails {
     public boolean isEnabled() {
         return true;
     }
-
-
 }

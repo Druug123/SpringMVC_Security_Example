@@ -1,6 +1,5 @@
 package jm.security.example.dao;
 
-import jm.security.example.model.Role;
 import jm.security.example.model.User;
 import java.util.List;
 
@@ -16,10 +15,4 @@ public interface UserDao {
     void update(User user);
 
     void delete(long id);
-
-    Role getRoleById(long id);
-
-    List<Role> getAllRoles();
-
-    void saveRole(Role role);
 }
