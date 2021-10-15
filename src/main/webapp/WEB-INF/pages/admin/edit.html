@@ -18,12 +18,11 @@
     <label for="age">Age:</label>
     <input type="text" th:field="*{age}" id="age"/>
     <br/>
-    <label>
-        <input type="checkbox" th:checked="${flag1}" name="ROLE_USER_checkbox" id="roles"/> ROLE_USER
-    </label>
-    <label>
-        <input type="checkbox" th:checked="${flag2}" name="ROLE_ADMIN_checkbox" /> ROLE_ADMIN
-    </label>
+    <tr th:each="role :${roles}">
+        <label>
+            <input th:text="${role.getRole()}" type="checkbox" name="roleList" th:value="${role.getId()}"/>
+        </label>
+    </tr>
     <br/>
     <input type="submit" value="Update"/>
 

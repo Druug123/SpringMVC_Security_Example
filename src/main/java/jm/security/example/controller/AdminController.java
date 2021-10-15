@@ -8,8 +8,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.HashSet;
-import java.util.Set;
+import java.util.*;
 
 @Controller
 @RequestMapping("/admin")
@@ -30,23 +29,18 @@ public class AdminController {
     }
 
     @GetMapping("/new")
-    public String newUser(@ModelAttribute("user") User user) {
+    public String newUser(@ModelAttribute("user") User user, Model model) {
+        model.addAttribute("roles", userService.getAllRoles());
         return "admin/new";
     }
 
     @PostMapping
-    public String createUser(@RequestParam(value = "ROLE_USER_checkbox", required = false) String ROLE_USER_checkbox,
-                             @RequestParam(value = "ROLE_ADMIN_checkbox", required = false) String ROLE_ADMIN_checkbox,
-                             @ModelAttribute("user") User user) {
+    public String createUser(@ModelAttribute("user") User user, @RequestParam(value = "roleList") long[] roleList) {
         Set<Role> roles = new HashSet<>();
-        if (ROLE_ADMIN_checkbox != null) {
-            roles.add(userService.getRoleById(1));
-            user.setRoles(roles);
+        for (long roleId : roleList){
+            roles.add(userService.getRoleById(roleId));
         }
-        if (ROLE_USER_checkbox != null) {
-            roles.add(userService.getRoleById(2));
-            user.setRoles(roles);
-        }
+        user.setRoles(roles);
         userService.create(user);
         return "redirect:/admin";
     }
@@ -54,22 +48,17 @@ public class AdminController {
     @GetMapping("/{id}/edit")
     public String edit(Model model, @PathVariable("id") long id) {
         model.addAttribute("user", userService.show(id));
+        model.addAttribute("roles", userService.getAllRoles());
         return "admin/edit";
     }
 
     @PatchMapping("/{id}")
-    public String update(@RequestParam(value = "ROLE_USER_checkbox", required = false) String ROLE_USER_checkbox,
-                         @RequestParam(value = "ROLE_ADMIN_checkbox", required = false) String ROLE_ADMIN_checkbox,
-                         @ModelAttribute("user") User user) {
+    public String update(@ModelAttribute("user") User user, @RequestParam(value = "roleList") long[] roleList) {
         Set<Role> roles = new HashSet<>();
-        if (ROLE_ADMIN_checkbox != null) {
-            roles.add(userService.getRoleById(1));
-            user.setRoles(roles);
+        for (long roleId : roleList){
+            roles.add(userService.getRoleById(roleId));
         }
-        if (ROLE_USER_checkbox != null) {
-            roles.add(userService.getRoleById(2));
-            user.setRoles(roles);
-        }
+        user.setRoles(roles);
         userService.update(user);
         return "redirect:/admin";
     }

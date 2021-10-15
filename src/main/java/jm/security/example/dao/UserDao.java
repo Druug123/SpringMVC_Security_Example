@@ -18,4 +18,8 @@ public interface UserDao {
     void delete(long id);
 
     Role getRoleById(long id);
+
+    List<Role> getAllRoles();
+
+    void saveRole(Role role);
 }

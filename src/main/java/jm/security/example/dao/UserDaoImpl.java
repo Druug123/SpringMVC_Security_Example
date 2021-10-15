@@ -14,17 +14,12 @@ import java.util.List;
 public class UserDaoImpl implements UserDao {
 
     private EntityManager entityManager;
-    private BCryptPasswordEncoder passwordEncoder;
 
     @PersistenceContext
     public void setEntityManager(EntityManager entityManager) {
         this.entityManager = entityManager;
     }
 
-    @Autowired
-    public void setPasswordEncoder(BCryptPasswordEncoder passwordEncoder) {
-        this.passwordEncoder = passwordEncoder;
-    }
 
     @Override
     public List<User> index() {
@@ -34,7 +29,6 @@ public class UserDaoImpl implements UserDao {
 
     @Override
     public void create(User user) {
-        user.setPassword(passwordEncoder.encode(user.getPassword()));
         entityManager.merge(user);
     }
 
@@ -47,7 +41,6 @@ public class UserDaoImpl implements UserDao {
 
     @Override
     public void update(User user) {
-        user.setPassword(passwordEncoder.encode(user.getPassword()));
         entityManager.merge(user);
     }
 
@@ -69,6 +62,16 @@ public class UserDaoImpl implements UserDao {
     @Override
     public Role getRoleById(long id) {
         return entityManager.find(Role.class, id);
+    }
+
+    @Override
+    public List<Role> getAllRoles() {
+        return entityManager.createQuery("SELECT role from Role role").getResultList();
+    }
+
+    @Override
+    public void saveRole(Role role){
+        entityManager.merge(role);
     }
 }
 

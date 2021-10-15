@@ -9,35 +9,27 @@ import javax.persistence.*;
 import java.util.Collection;
 import java.util.Set;
 
-
+@Getter
+@Setter
 @Entity
-
 public class User implements UserDetails {
-    @Getter
-    @Setter
+
     @Id
     @GeneratedValue
     private Long id;
 
-    @Getter
-    @Setter
+
     private String name;
 
-    @Getter
-    @Setter
+
     private String password;
 
-    @Getter
-    @Setter
+
     private int age;
 
-    @Getter
-    @Setter
+
     private String email;
 
-
-    @Setter
-    @Getter
     @ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     @JoinTable(name = "user_roles",
             joinColumns = @JoinColumn(name = "user_id"),
@@ -45,6 +37,14 @@ public class User implements UserDetails {
     private Set<Role> roles;
 
     public User() {
+    }
+
+    public User(String name, String password, int age, String email, Set<Role> roles) {
+        this.name = name;
+        this.password = password;
+        this.age = age;
+        this.email = email;
+        this.roles = roles;
     }
 
     @Override

@@ -11,22 +11,25 @@ import javax.persistence.Id;
 import javax.persistence.ManyToMany;
 import java.util.Set;
 
+@Getter
+@Setter
 @Entity
 public class Role implements GrantedAuthority {
-    @Getter
-    @Setter
+
     @Id
     @GeneratedValue
     private Long id;
-    @Getter
-    @Setter
+
     private String role;
-    @Getter
-    @Setter
+
     @ManyToMany(mappedBy = "roles")
     private Set<User> users;
 
     public Role(){
+    }
+
+    public Role(String role) {
+        this.role = role;
     }
 
     @Override
